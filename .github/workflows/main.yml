@@ -44,7 +44,10 @@ jobs:
       # Get latest run_id
       - name: Get latest MLflow run_id
         run: |
-          RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | grep -oE '[a-f0-9]{32}')
+          # 1. Get the full path of the newest folder
+          LATEST_PATH=$(ls -td mlruns/0/*/ | head -n 1)
+          # 2. Strip the slashes to get just the ID
+          RUN_ID=$(basename $LATEST_PATH)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "Latest run_id: $RUN_ID"
           
